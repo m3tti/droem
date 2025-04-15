@@ -8,16 +8,30 @@
                           :alignItems "center"
                           :justifyContent "center"}}))
 
-(defn Edit [{:keys [state setState]}]
+(defn Edit [{:keys [state updateState]}]
   #jsx [View {:style styles.container}
         [Text {:style {:color "#ffffff"}} "Edit"]
         [Button {:onPress #(setState {:route :dd-index})
                  :title "Test"}]
         [StatusBar {:style "auto"}]])
 
-(defn Index [{:keys [state setState]}]
+(defn- add-element [updateState state]
+  (let [current-items (:dream-diary state)
+        current-id (count current-items)]
+    (prn state)
+    (updateState
+     {:dream-diary
+      (concat [{:title (str "wurst" current-id)
+                :id current-id}]
+              current-items)})))
+
+(defn- render-item [entry]
+  #jsx [Text {:key (:id entry)} (:title entry)])
+
+(defn Index [{:keys [state updateState]}]
   #jsx [View {:style styles.container}
         [Text {:style {:color "#ffffff"}} "Droem - DreamDiaryView 2.0"]
-        [Button {:onPress #(setState {:route :dd-edit})
-                 :title "Test"}]
+        (map render-item (:dream-diary state))
+        [Button {:onPress #(add-element updateState state)
+                 :title "Add Element"}]
         [StatusBar {:style "auto"}]])
