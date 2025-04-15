@@ -1,7 +1,8 @@
 # OSX
 #
 .DS_Store
-
+dist/
+.nrepl-port
 # Xcode
 #
 build/

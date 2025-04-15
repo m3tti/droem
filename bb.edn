@@ -1,0 +1,7 @@
+{:tasks
+ {dev:watch (shell "npx squint watch")
+  dev:repl  (shell "npx squint nrepl-server :port 1888")
+  dev:dev-server (shell "npm start")
+  dev:android (shell "npm run android")
+  -dev {:depends [dev:watch dev:repl dev:dev-server dev:android]}
+  dev (run '-dev {:parallel true})}}
