@@ -4,4 +4,6 @@
   dev:dev-server (shell "npm start")
   dev:android (shell "npm run android")
   -dev {:depends [dev:watch dev:repl dev:dev-server dev:android]}
-  dev (run '-dev {:parallel true})}}
+  dev (run '-dev {:parallel true})
+  build:android (shell "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew assemble")
+  run:android (shell "npx react-native run-android --mode=release")}}

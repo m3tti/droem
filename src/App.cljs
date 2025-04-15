@@ -1,9 +1,10 @@
 (ns App
   (:require
+   [DreamDiary :as dd]
    ["react" :refer [useState]]
    ["react-native" :refer [Text View StyleSheet StatusBar Button]]))
 
-(def initialState {:route :home})
+(def initialState {:route :dd-index})
 
 (def styles (StyleSheet.create
              {:container {:flex 1
@@ -14,25 +15,12 @@
 (defn- with-state [stateProps component]
   (component stateProps))
 
-(defn- TestView [{:keys [state setState]}]
-  #jsx [View {:style styles.container}
-        [Text {:style {:color "#ffffff"}} "Hello"]
-        [Button {:onPress #(setState {:route :home})
-                 :title "Home"}]
-        [StatusBar {:style "auto"}]])
-
-(defn- HomeView [{:keys [state setState]}]
-  #jsx [View {:style styles.container}
-        [Text {:style {:color "#ffffff"}} "Droem 2.0"]
-        [Button {:onPress #(setState {:route :test})
-                 :title "Test"}]
-        [StatusBar {:style "auto"}]])
-
 (defn- App []
   (let [[state setState] (useState initialState)]
     (with-state {:state state :setState setState}
       (case (:route state)
-        :home HomeView
-        :test TestView))))
+        :dd-index dd/Index
+        :dd-edit dd/Edit
+        ddv/Index))))
 
 (def default App)
