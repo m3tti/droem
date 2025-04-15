@@ -3,7 +3,7 @@
    ["react" :refer [useState]]
    ["react-native" :refer [Text View StyleSheet StatusBar Button]]))
 
-(def initialState {:route "home"})
+(def initialState {:route :home})
 
 (def styles (StyleSheet.create
              {:container {:flex 1
@@ -11,22 +11,28 @@
                           :alignItems "center"
                           :justifyContent "center"}}))
 
+(defn- with-state [stateProps component]
+  (component stateProps))
+
 (defn- TestView [{:keys [state setState]}]
   #jsx [View {:style styles.container}
         [Text {:style {:color "#ffffff"}} "Hello"]
-        [Button {:onPress #(setState {:route "home"}) :title "Home"}]
+        [Button {:onPress #(setState {:route :home})
+                 :title "Home"}]
         [StatusBar {:style "auto"}]])
 
 (defn- HomeView [{:keys [state setState]}]
   #jsx [View {:style styles.container}
         [Text {:style {:color "#ffffff"}} "Droem 2.0"]
-        [Button {:onPress #(setState {:route "test"}) :title "Test"}]
+        [Button {:onPress #(setState {:route :test})
+                 :title "Test"}]
         [StatusBar {:style "auto"}]])
 
 (defn- App []
   (let [[state setState] (useState initialState)]
-    (case (:route state)
-      "home" #jsx [HomeView {:state state :setState setState}]
-      "test" #jsx [TestView {:state state :setState setState}])))
+    (with-state {:state state :setState setState}
+      (case (:route state)
+        :home HomeView
+        :test TestView))))
 
 (def default App)
